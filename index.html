@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Generador de contraseñas aleatorias, rápidas y seguras. Genera claves robustas al instante con opciones personalizadas y evaluación de fortaleza en tiempo real.">
+  <meta name="keywords" content="generador de contraseñas, password generator, seguridad, claves seguras, generador online">
+  <meta name="author" content="Generador de Contraseñas">
+  <title>Generador de Contraseñas Seguras | Herramienta Online</title>
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="main-header">
+      <div class="brand">
+        <div class="brand-icon-wrapper" aria-hidden="true">
+          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <rect x="9" y="11" width="6" height="5" rx="1"/>
+            <path d="M10 11V9a2 2 0 1 1 4 0v2"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-tag">Utilidad de Seguridad</span>
+          <h1 class="brand-title">Generador de Contraseñas</h1>
+        </div>
+      </div>
+      <p class="brand-description">
+        Crea contraseñas criptográficamente seguras, personalizadas y resistentes al instante en tu propio navegador.
+      </p>
+    </header>
+
+    <main class="app-main">
+      <section class="generator-card" aria-label="Generador de contraseñas">
+        <!-- Pantalla de visualización de contraseña -->
+        <div class="display-container">
+          <div class="display-input-wrap">
+            <input 
+              type="text" 
+              id="password-output" 
+              class="password-field" 
+              readonly 
+              autocomplete="off" 
+              spellcheck="false" 
+              aria-label="Contraseña generada"
+              value=""
+            >
+          </div>
+
+          <div class="display-actions">
+            <button 
+              type="button" 
+              id="btn-toggle-visibility" 
+              class="action-button" 
+              title="Ocultar contraseña" 
+              aria-label="Ocultar o mostrar contraseña"
+            >
+              <svg class="icon-eye-off is-hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+              <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <span class="action-tooltip">Mostrar / Ocultar</span>
+            </button>
+
+            <button 
+              type="button" 
+              id="btn-regenerate" 
+              class="action-button" 
+              title="Generar nueva contraseña" 
+              aria-label="Generar nueva contraseña"
+            >
+              <svg class="icon-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="23 4 23 10 17 10"/>
+                <polyline points="1 20 1 14 7 14"/>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+              </svg>
+              <span class="action-tooltip">Regenerar</span>
+            </button>
+
+            <button 
+              type="button" 
+              id="btn-copy" 
+              class="action-button action-button-copy" 
+              title="Copiar contraseña al portapapeles" 
+              aria-label="Copiar contraseña al portapapeles"
+            >
+              <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <svg class="icon-check is-hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span class="action-tooltip">Copiar</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Indicador de fortaleza -->
+        <div class="strength-meter-box" aria-live="polite">
+          <div class="strength-info">
+            <span class="strength-label">Fortaleza de la contraseña:</span>
+            <span id="strength-text" class="strength-value">Fuerte</span>
+          </div>
+          <div class="strength-bars" role="progressbar" aria-valuemin="0" aria-valuemax="4" aria-valuenow="3" aria-label="Indicador visual de fortaleza">
+            <span class="strength-segment" data-segment="1"></span>
+            <span class="strength-segment" data-segment="2"></span>
+            <span class="strength-segment" data-segment="3"></span>
+            <span class="strength-segment" data-segment="4"></span>
+          </div>
+          <p id="strength-hint" class="strength-hint">Excelente combinación de caracteres y longitud segura.</p>
+        </div>
+
+        <!-- Formulario de configuración -->
+        <form id="generator-form" class="options-form">
+          <!-- Control de longitud -->
+          <div class="control-group length-control-group">
+            <div class="length-header">
+              <label for="length-slider" class="control-label">Longitud de la contraseña</label>
+              <div class="length-badge">
+                <span id="length-display" class="length-number">16</span>
+                <span class="length-unit">caracteres</span>
+              </div>
+            </div>
+            
+            <div class="slider-wrapper">
+              <span class="slider-bound">6</span>
+              <input 
+                type="range" 
+                id="length-slider" 
+                min="6" 
+                max="64" 
+                value="16" 
+                step="1"
+                class="length-slider" 
+                aria-label="Seleccionar longitud de la contraseña"
+              >
+              <span class="slider-bound">64</span>
+            </div>
+          </div>
+
+          <!-- Opciones de caracteres -->
+          <fieldset class="control-group options-fieldset">
+            <legend class="control-label">Conjuntos de caracteres permitidos</legend>
+            <div class="checkboxes-grid">
+              <!-- Mayúsculas -->
+              <label class="custom-checkbox" for="opt-uppercase">
+                <input type="checkbox" id="opt-uppercase" name="uppercase" checked>
+                <span class="checkbox-box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                <span class="checkbox-content">
+                  <span class="checkbox-title">Mayúsculas</span>
+                  <span class="checkbox-preview">A, B, C, D...</span>
+                </span>
+              </label>
+
+              <!-- Minúsculas -->
+              <label class="custom-checkbox" for="opt-lowercase">
+                <input type="checkbox" id="opt-lowercase" name="lowercase" checked>
+                <span class="checkbox-box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                <span class="checkbox-content">
+                  <span class="checkbox-title">Minúsculas</span>
+                  <span class="checkbox-preview">a, b, c, d...</span>
+                </span>
+              </label>
+
+              <!-- Números -->
+              <label class="custom-checkbox" for="opt-numbers">
+                <input type="checkbox" id="opt-numbers" name="numbers" checked>
+                <span class="checkbox-box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                <span class="checkbox-content">
+                  <span class="checkbox-title">Números</span>
+                  <span class="checkbox-preview">0, 1, 2, 3...</span>
+                </span>
+              </label>
+
+              <!-- Símbolos -->
+              <label class="custom-checkbox" for="opt-symbols">
+                <input type="checkbox" id="opt-symbols" name="symbols" checked>
+                <span class="checkbox-box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                <span class="checkbox-content">
+                  <span class="checkbox-title">Símbolos</span>
+                  <span class="checkbox-preview">! @ # $ % & *</span>
+                </span>
+              </label>
+            </div>
+          </fieldset>
+
+          <!-- Botón principal de generar -->
+          <div class="form-submit-group">
+            <button type="submit" id="btn-generate-main" class="btn-primary">
+              <svg class="btn-primary-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                <line x1="12" y1="22.08" x2="12" y2="12"/>
+              </svg>
+              <span>Generar contraseña</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Consejos y características de seguridad -->
+      <section class="info-section" aria-label="Consejos de seguridad de contraseñas">
+        <h2 class="info-title">Buenas prácticas para tus contraseñas</h2>
+        <div class="features-grid">
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <div class="feature-body">
+              <h3 class="feature-name">100% Privado y Seguro</h3>
+              <p class="feature-desc">Las claves se generan localmente en tu dispositivo mediante la API Criptográfica nativa. Ningún dato viaja por la red.</p>
+            </div>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="9" x2="20" y2="9"/>
+                <line x1="4" y1="15" x2="20" y2="15"/>
+                <line x1="10" y1="3" x2="8" y2="21"/>
+                <line x1="16" y1="3" x2="14" y2="21"/>
+              </svg>
+            </div>
+            <div class="feature-body">
+              <h3 class="feature-name">Mínimo 16 Caracteres</h3>
+              <p class="feature-desc">Una longitud igual o mayor a 16 caracteres con combinaciones variadas resiste ataques de fuerza bruta modernos.</p>
+            </div>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+              </svg>
+            </div>
+            <div class="feature-body">
+              <h3 class="feature-name">No Reutilices Claves</h3>
+              <p class="feature-desc">Utiliza una contraseña única para cada servicio y apóyate en un gestor de contraseñas de confianza.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="main-footer">
+      <p class="footer-copy">
+        Generador de Contraseñas &bull; Aplicación web rápida, segura y accesible sin dependencias externas.
+      </p>
+    </footer>
+  </div>
+
+  <!-- Contenedor dinámico de notificaciones visuales (Toast) -->
+  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
